@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+	<head>
+
+	</head>
+	<body>
+		<div>
+			<div class="bla">
+				<style scoped>
+					.z{background-color:green; color: yellow; }
+				</style>				
+				<div class="z">ha</div>
+			</div>
+			<div class="bla">
+				<style scoped>
+					.z{background-color:orange;}
+				</style>
+				<div class="z">da</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript">
+var styleTags = document.querySelectorAll("style");
+for(var i = 0, l = styleTags.length; i < l; i++){
+	var styleTag = styleTags[i];
+	var id = (new Date()).getTime() + i + l;
+	styleTag.parentNode.setAttribute("data-scoped-id", id);
+	if (styleTag.attributes["scoped"]){
+
+		var cssRules = styleTag.sheet.cssRules;
+		for(var j = 0, l2 = cssRules.length; j < l2; j++) {
+			var oldCSSRule = cssRules[j];
+			var newCSSRuleSelector = "[data-scoped-id='" + id + "'] " + oldCSSRule.selectorText;			
+			styleTag.sheet.deleteRule(oldCSSRule);
+			var styling = oldCSSRule.cssText.split(/\{|\}/)[1].trim();
+			styleTag.sheet.addRule(newCSSRuleSelector, styling);
+
+		}
+	}
+}
+	</script>
+</html>
